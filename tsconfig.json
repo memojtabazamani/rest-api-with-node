@@ -1,11 +1,15 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "commonjs",  // Change this to commonjs
     "moduleResolution": "node",
     "baseUrl": "src",
     "outDir": "dist",
     "sourceMap": true,
     "noImplicitAny": true,
+    "esModuleInterop": true,  // Add this
+    "allowSyntheticDefaultImports": true,  // Add this
+    "target": "ES2020",  // Add this for better compatibility
+    "skipLibCheck": true  // Add this to skip type checking of declaration files
   },
   "include": ["src/**/*"]
 }
