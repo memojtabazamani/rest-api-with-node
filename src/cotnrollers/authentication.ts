@@ -53,3 +53,39 @@ export const register = async (req: express.Request, res: express.Response) => {
         return res.status(500).json({ error: "Internal server error" });
     }
 };
+
+export const login = async (req: express.Request, res: express.Response) => {
+    try {
+        const { email, password } = req.body;
+
+        if(!email || !password) {
+            return res.sendStatus(400);
+        }
+        console.log(email, password)
+        const user = await (getUserByEmail(email).select('+authentication.salt +authentication.password'));
+
+        console.log(user)
+        if(!user) {
+            return res.sendStatus(402);
+        }
+
+        const expectedHash = authentication(user.authentication.salt, password);
+
+        if(user.authentication.password !== expectedHash) {
+            return res.sendStatus(403);
+        }
+
+
+        const salt = random();
+        user.authentication.sessionToken = authentication(salt, user._id.toString());
+
+        await user.save();
+
+        res.cookie('CRAZY-AUTH', user.authentication.sessionToken, { domain: 'localhost', path: '/' });
+
+        return res.status(200).json(user).end();
+    } catch (error) {
+        console.log(error);
+        return res.status(400);
+    }
+}

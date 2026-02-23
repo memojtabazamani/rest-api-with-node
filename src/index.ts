@@ -55,6 +55,6 @@ mongoose.connection.on('disconnected', () => {
 // FIXED: You're using router() which returns a router, so just use it directly
 app.use('/', router());
 
-server.listen(8080, () => {
-    console.log(`Server listening on http://localhost:8080`);
+server.listen(9090, () => {
+    console.log(`Server listening on http://localhost:9090`);
 });
